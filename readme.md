@@ -3,15 +3,10 @@ flexsurvcure
 
 The development repository for flexsurvcure, an R package for parametric mixture and non-mixture cure models.  Flexsurvcure is based on [flexsurv](http://cran.r-project.org/package=flexsurv), the R package for parametric survival modelling.
 
-
-## Installation (stable CRAN version)
-```r
-install.packages("flexsurv")
-```
-
 ## Installation (development version)
 
 ```r
+install.packages("flexsurv")
 install.packages("devtools") # if devtools not already installed
 install.packages("flexsurv")
 devtools::install_github('jrdnmdhl/flexsurvcure')
