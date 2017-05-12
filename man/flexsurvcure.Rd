@@ -64,10 +64,9 @@ cure fraction.  Defaults to logistic.}
 \item{mixture}{optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.}
 
 \item{anc}{An alternative and safer way to model covariates on ancillary
-parameters, that is, parameters other than the main location parameter of
-the distribution.  This is a named list of formulae, with the name of each
-component giving the parameter to be modelled.  The model above can also be
-defined as:
+parameters, that is, parameters other than the cure fraction.  This is a
+named list of formulae, with the name of each component giving the parameter
+to be modelled.  The model above can also be defined as:
 
 \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}}
 

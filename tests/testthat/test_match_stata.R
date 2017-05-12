@@ -107,3 +107,57 @@ test_that("Lognormal Mixture matches stata", {
   expect_equal(ident_se, unname(ident_null$res.t[ ,4]), tolerance=1e-2)
 
 })
+
+test_that("Weibull Non-Mixture matches stata", {
+
+  # Weibull, Logistic
+  # ------------------------------------------------------------------------------
+  #   _t |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+  # -------------+----------------------------------------------------------------
+  #   pi           |
+  #   _cons |  -.5151878   .1806544    -2.85   0.004    -.8692639   -.1611116
+  # -------------+----------------------------------------------------------------
+  #   ln_lambda    |
+  #   _cons |  -12.16467   .6119361   -19.88   0.000    -13.36405    -10.9653
+  # -------------+----------------------------------------------------------------
+  #   ln_gamma     |
+  #   _cons |   .5110451   .0585201     8.73   0.000     .3963477    .6257425
+  # ------------------------------------------------------------------------------
+  logistic_params = c( -.5151878, .5110451, -12.16467)
+  logistic_lower = c( -.8692639, .3963477, -13.36405)
+  logistic_upper = c(-.1611116, .6257425,  -10.9653)
+  logistic_se = c(.1806544 , .0585201 ,  .6119361)
+  logistic_null = flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="logistic", dist="weibullPH", mixture=F)
+
+  # Tolerance here is very permissive
+  expect_equal(logistic_params, unname(logistic_null$res.t[ ,1]), tolerance=1e-2)
+  expect_equal(logistic_lower, unname(logistic_null$res.t[ ,2]), tolerance=1e-2)
+  expect_equal(logistic_upper, unname(logistic_null$res.t[ ,3]), tolerance=1e-2)
+  expect_equal(logistic_se, unname(logistic_null$res.t[ ,4]), tolerance=1e-2)
+
+  # Weibull, Loglog
+  # ------------------------------------------------------------------------------
+  #   _t |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+  # -------------+----------------------------------------------------------------
+  #   pi           |
+  #   _cons |  -.0165781   .1149836    -0.14   0.885    -.2419419    .2087857
+  # -------------+----------------------------------------------------------------
+  #   ln_lambda    |
+  #   _cons |  -12.16465   .6119389   -19.88   0.000    -13.36402   -10.96527
+  # -------------+----------------------------------------------------------------
+  #   ln_gamma     |
+  #   _cons |   .5110431   .0585205     8.73   0.000     .3963451    .6257412
+  # ------------------------------------------------------------------------------
+
+  loglog_params = c(-.0165781, .5110431, -12.16465)
+  loglog_lower = c( -.2419419, .3963451, -13.36402)
+  loglog_upper = c(.2087857, .6257412, -10.96527)
+  loglog_se = c(.1149836, .0585205, .6119389)
+  loglog_null = flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="loglog", dist="weibullPH", mixture=F)
+
+  # Tolerance here is very permissive
+  expect_equal(loglog_params, unname(loglog_null$res.t[ ,1]), tolerance=1e-2)
+  expect_equal(loglog_lower, unname(loglog_null$res.t[ ,2]), tolerance=1e-2)
+  expect_equal(loglog_upper, unname(loglog_null$res.t[ ,3]), tolerance=1e-2)
+  expect_equal(loglog_se, unname(loglog_null$res.t[ ,4]), tolerance=1e-2)
+})

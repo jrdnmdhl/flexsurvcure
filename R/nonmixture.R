@@ -1,11 +1,11 @@
-##' Mixture cure models
+##' Non-Mixture cure models
 ##'
 ##' Probability density, distribution, quantile, random generation, hazard
 ##' cumulative hazard, mean and restricted mean functions for generic
-##' mixture cure models
+##' non-mixture cure models
 ##'
-##' @aliases dmixsurv pmixsurv qmixsurv rmixsurv
-##' hmixsurv Hmixsurv mean_mixsurv rmst_mixsurv
+##' @aliases dnmixsurv pnmixsurv qnmixsurv rnmixsurv
+##' hnmixsurv Hnmixsurv mean_nmixsurv rmst_nmixsurv
 ##' @param pfun The base distribution's cumulative distribution function.
 ##' @param dfun The base distribution's probability density function.
 ##' @param x,q,t Vector of times.
@@ -21,29 +21,29 @@
 ##' @param log,log.p Return log density or probability.
 ##' @param lower.tail logical; if TRUE (default), probabilities are \eqn{P(X
 ##' \le x)}{P(X <= x)}, otherwise, \eqn{P(X > x)}{P(X > x)}.
-##' @return \code{dmixsurv} gives the density, \code{pmixsurv} gives the
-##' distribution function, \code{hmixsurv} gives the hazard and
-##' \code{Hmixsurv} gives the cumulative hazard.
+##' @return \code{dnmixsurv} gives the density, \code{pnmixsurv} gives the
+##' distribution function, \code{hnmixsurv} gives the hazard and
+##' \code{Hnmixsurv} gives the cumulative hazard.
 ##'
-##' \code{qmixsurv} gives the quantile function, which is computed by crude
+##' \code{qnmixsurv} gives the quantile function, which is computed by crude
 ##' numerical inversion.
 ##'
-##' \code{rmixsurv} generates random survival times by using
+##' \code{rnmixsurv} generates random survival times by using
 ##' \code{qnmixsurv} on a sample of uniform random numbers.  Due to the
 ##' numerical root-finding involved in \code{qnmixsurv}, it is slow compared
 ##' to typical random number generation functions.
 ##' @author Jordan Amdahl <jrdnmdhl@gmail.com>
 ##' @keywords distribution
-##' @name mixsurv
+##' @name nmixsurv
 NULL
 
 #' @export
-pmixsurv = function(pfun, q, theta, ...) {
+pnmixsurv = function(pfun, q, theta, ...) {
   dots <- list(...)
   args <- dots
-  args$lower.tail <- F
+  args$lower.tail <- T
   args$log.p <- F
-  out <- theta + (1 - theta) * do.call(pfun, append(list(q), args))
+  out <- theta ^ do.call(pfun, append(list(q), args))
   if (is.null(dots$lower.tail) || dots$lower.tail) {
     out <- 1 - out
   }
@@ -54,17 +54,12 @@ pmixsurv = function(pfun, q, theta, ...) {
 }
 
 #' @export
-hmixsurv = function(dfun, pfun, x, theta, ...) {
+hnmixsurv = function(dfun,x, theta, ...) {
   dots <- list(...)
-  pargs <- dots
-  pargs$lower.tail <- F
-  pargs$log.p <- F
-  pargs$log <- NULL
-  dargs <- dots
-  dargs$log <- F
-  u_surv <- do.call(pfun, append(list(x), pargs))
-  u_pdf <- do.call(dfun, append(list(x), dargs))
-  out <- ((1 - theta) * u_pdf) / (theta + (1 - theta) * u_surv)
+  args <- dots
+  args$log <- F
+  u_pdf <-
+  out <- -log(theta) * do.call(dfun, append(list(x), args))
   if (!is.null(dots$log) && dots$log) {
     out <- log(out)
   }
@@ -72,13 +67,13 @@ hmixsurv = function(dfun, pfun, x, theta, ...) {
 }
 
 #' @export
-Hmixsurv = function(pfun, x, theta, ...) {
+Hnmixsurv = function(pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
   pargs$lower.tail <- F
   pargs$log.p <- F
   pargs$log <- NULL
-  surv <- do.call(pmixsurv, append(list(pfun, x), pargs))
+  surv <- do.call(pnmixsurv, append(list(pfun, x), pargs))
   out <- -log(surv)
   if (!is.null(dots$log) && dots$log) {
     out <- log(out)
@@ -87,7 +82,7 @@ Hmixsurv = function(pfun, x, theta, ...) {
 }
 
 #' @export
-dmixsurv = function(dfun, pfun, x, theta, ...) {
+dnmixsurv = function(dfun, pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
   pargs$lower.tail <- F
@@ -95,8 +90,8 @@ dmixsurv = function(dfun, pfun, x, theta, ...) {
   pargs$log <- NULL
   hargs <- dots
   hargs$log <- F
-  u_surv <- do.call(pmixsurv, append(list(pfun, x, theta), pargs))
-  u_haz <- do.call(hmixsurv, append(list(dfun, pfun, x, theta), hargs))
+  u_surv <- do.call(pnmixsurv, append(list(pfun, x, theta), pargs))
+  u_haz <- do.call(hnmixsurv, append(list(dfun, x, theta), hargs))
   out <- u_surv * u_haz
   if (!is.null(dots$log) && dots$log) {
     out <- log(out)
@@ -105,7 +100,7 @@ dmixsurv = function(dfun, pfun, x, theta, ...) {
 }
 
 #' @export
-qmixsurv = function(pfun, p, theta, ...) {
+qnmixsurv = function(pfun, p, theta, ...) {
   dots <- list(...)
   args <- dots
   args$lower.tail <- F
@@ -116,7 +111,7 @@ qmixsurv = function(pfun, p, theta, ...) {
     qgeneric,
     append(
       list(
-        function(...) pmixsurv(pfun, ...),
+        function(...) pnmixsurv(pfun, ...),
         p = p,
         theta = theta
       ),
@@ -128,7 +123,7 @@ qmixsurv = function(pfun, p, theta, ...) {
 
 
 #' @export
-rmixsurv = function(pfun, n, theta, ...) {
+rnmixsurv = function(pfun, n, theta, ...) {
   dots <- list(...)
   args <- dots
   args$lower.tail <- F
@@ -139,7 +134,7 @@ rmixsurv = function(pfun, n, theta, ...) {
     qgeneric,
     append(
       list(
-        function(...) pmixsurv(pfun, ...),
+        function(...) pnmixsurv(pfun, ...),
         p = runif(n),
         theta = theta
       ),
@@ -150,13 +145,13 @@ rmixsurv = function(pfun, n, theta, ...) {
 }
 
 #' @export
-rmst_mixsurv = function(pfun, t, theta, ...) {
+rmst_nmixsurv = function(pfun, t, theta, ...) {
   args <- list(...)
   out <- do.call(
     rmst_generic,
     append(
       list(
-        function(...) pmixsurv(pfun, ...),
+        function(...) pnmixsurv(pfun, ...),
         t = t,
         theta = theta
       ),
@@ -167,14 +162,14 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
 }
 
 #' @export
-mean_mixsurv = function(pfun, t, theta, ...) {
+mean_nmixsurv = function(pfun, t, theta, ...) {
   args <- list(...)
   args$start <- 0
   out <- do.call(
     rmst_generic,
     append(
       list(
-        function(...) pmixsurv(pfun, ...),
+        function(...) pnmixsurv(pfun, ...),
         t = t,
         theta = theta
       ),
