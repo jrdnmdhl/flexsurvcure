@@ -1,3 +1,4 @@
+#' Taken from flexsurv, needed to wrap init functions of base distributions
 expand.inits.args <- function(inits){
   inits2 <- inits
   formals(inits2) <- alist(t=,mf=,mml=,aux=)
@@ -5,7 +6,79 @@ expand.inits.args <- function(inits){
   inits2
 }
 
-#' @export
+#' Mixture and Non-Mixture Parametric Cure Models
+##'
+##' Mixture and non-mixture cure models using flexible base distribtuions
+##' from the flexsurv package.
+##'
+##' This function works as a wrapper around \code{flexsurv::flexsurvreg} by
+##' dynamically constructing a custom distribution using
+##' \code{\link{dsurvmix}}, \code{\link{psurvmix}}}.
+##'
+##' In a parametric mixture model, it is assume that there is a group of individuals
+##' who experience no excess mortality, with the proportion of patients being given
+##' by the estimated cure fraction, and a parametric distribution representing excess
+##' mortality for the remaining individuals.
+##'
+##' By contrast, a parametric non-mixture model simply rescales an existing parametric
+##' distribution such that survival reaches an asyptote >0.
+##'
+##' @param formula A formula expression in conventional R linear modelling
+##' syntax. The response must be a survival object as returned by the
+##' \code{\link{Surv}} function, and any covariates are given on the right-hand
+##' side.  For example,
+##'
+##' \code{Surv(time, dead) ~ age + sex}
+##'
+##' \code{Surv} objects of \code{type="right"},\code{"counting"},
+##' \code{"interval1"} or \code{"interval2"} are supported, corresponding to
+##' right-censored, left-truncated or interval-censored observations.
+##'
+##' If there are no covariates, specify \code{1} on the right hand side, for
+##' example \code{Surv(time, dead) ~ 1}.
+##'
+##' By default, covariates are placed on the ``theta'' parameter of the
+##' distribution, representing the cure fraction, through a linear
+##' model with the selected link function.
+##'
+##' Covariates can be placed on parameters of the base distribution by using the
+##' name of the parameter as a ``function'' in the formula.  For example, in a
+##' Weibull model, the following expresses the scale parameter in terms of age
+##' and a treatment variable \code{treat}, and the shape parameter in terms of
+##' sex and treatment.
+##'
+##' \code{Surv(time, dead) ~ age + treat + shape(sex) + shape(treat)}
+##'
+##' However, if the names of the ancillary parameters clash with any real
+##' functions that might be used in formulae (such as \code{I()}, or
+##' \code{factor()}), then those functions will not work in the formula.  A
+##' safer way to model covariates on ancillary parameters is through the
+##' \code{anc} argument to \code{flexsurv::flexsurvreg}.
+##'
+##' \code{\link{survreg}} users should also note that the function
+##' \code{strata()} is ignored, so that any covariates surrounded by
+##' \code{strata()} are applied to the location parameter.
+##' @param anc An alternative and safer way to model covariates on ancillary
+##' parameters, that is, parameters other than the cure fraction.  This is a
+##' named list of formulae, with the name of each component giving the parameter
+##' to be modelled.  The model above can also be defined as:
+##'
+##' \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}
+##' @param data A data frame in which to find variables supplied in
+##' \code{formula}.  If not given, the variables should be in the working
+##' environment.
+##' @param weights Optional variable giving case weights.
+##' @param bhazard Optional variable giving expected hazards for relative
+##' survival models.
+##' @param subset Vector of integers or logicals specifying the subset of the
+##' observations to be used in the fit.
+##' @param na.action a missing-data filter function, applied after any 'subset'
+##' argument has been used. Default is \code{options()$na.action}.
+##' @param dist A string representing one of the built-in distributions of flexsurv.
+##' @param link A string representing the link function to use for estimation of the
+##' cure fraction.  Defaults to logistic.
+##' @param mixture optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.
+##' @export
 flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, link = "logistic", mixture = T, ...) {
   call <- match.call()
   indx <- match(c("formula", "data", "weights", "bhazard", "subset", "na.action"), names(call), nomatch = 0)
