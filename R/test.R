@@ -1,24 +1,3 @@
-flexsurvcure.dists = list(
-  weibull = list(
-    name = "weibullmix",
-    pars = c("theta", "shape", "scale"),
-    location = "theta",
-    transforms = c(gtools::logit, log, log),
-    inv.transforms = c(gtools::inv.logit, exp, exp),
-    inits = function(t, mf) {
-      surv <- as.matrix(mf[ ,1])
-      weights <- mf[ ,ncol(mf)]
-      events <- surv[surv[ ,2] == 1, ]
-      theta <- 1 - mean(surv[ ,2] * weights)
-      shape <- 1
-      scale <- 1 / mean(events[ ,1])
-      out <- c(theta, shape, scale)
-      return(out)
-    }
-  )
-)
-
-
 pcuremix <- function(theta, surv) {
   theta + (1 - theta) * surv
 }
@@ -38,6 +17,15 @@ pweibullmix <- function(q, theta, shape, scale = 1, lower.tail = T, log.p = F) {
   return(out)
 }
 
+#' @export
+pweibullmix.quiet <- function(q, theta, shape, scale = 1, lower.tail = T, log.p = F) {
+  out <- suppressWarnings(
+    pweibullmix(q, theta, shape, scale = scale, lower.tail = lower.tail, log.p = log.p)
+  )
+  return(out)
+}
+
+
 pcurenmix <- function(theta, surv) {
   theta ^ (1 - surv)
 }
@@ -56,6 +44,14 @@ hweibullmix <- function(x, theta, shape, scale = 1, log = F) {
   if (log) {
     out <- log(out)
   }
+  return(out)
+}
+
+#' @export
+hweibullmix.quiet <- function(x, theta, shape, scale = 1, log = F) {
+  out <- suppressWarnings(
+    hweibullmix(x, theta, shape, scale = scale, log = log)
+  )
   return(out)
 }
 
@@ -80,6 +76,16 @@ dweibullmix <- function(x, theta, shape, scale = 1, log = F) {
   return(out)
 }
 
+#' @export
+dweibullmix.quiet <- function(x, theta, shape, scale = 1, log = F) {
+  out <- suppressWarnings(
+    dweibullmix(x, theta, shape, scale = scale, log = log)
+  )
+  return(out)
+}
+
+
+
 dcurenmix <- function(theta, haz, surv) {
   out <- pcurenmix(theta, surv) * hcurenmix(theta, haz, surv)
   return(out)
@@ -98,4 +104,32 @@ qweibullmix <- function(p, theta, shape, scale = 1, lower.tail = T, log.p = F) {
   )
 }
 
+#' @export
+qweibullmix.quiet <- function(p, theta, shape, scale = 1, lower.tail = T, log.p = F) {
+  out <- suppressWarnings(
+    pweibullmix.quiet(p, theta, shape, scale = scale, lower.tail = lower.tail, log.p = log.p)
+  )
+  return(out)
+}
+
+
+flexsurvcure.dists = list(
+  weibull = list(
+    name = "weibullmix.quiet",
+    pars = c("theta", "shape", "scale"),
+    location = "theta",
+    transforms = c(gtools::logit, log, log),
+    inv.transforms = c(gtools::inv.logit, exp, exp),
+    inits = function(t, mf) {
+      surv <- as.matrix(mf[ ,1])
+      weights <- mf[ ,ncol(mf)]
+      events <- surv[surv[ ,2] == 1, ]
+      theta <- 1 - mean(surv[ ,2] * weights)
+      shape <- 1
+      scale <- 1 / mean(events[ ,1])
+      out <- c(theta, shape, scale)
+      return(out)
+    }
+  )
+)
 
