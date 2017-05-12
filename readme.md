@@ -27,6 +27,6 @@ plot(non_mixture)
 
 ## Covariates on parameters other than cure fraction
 ```r
-mixture_covarite_scale = flexsurvcure(Surv(rectime,censrec)~group, data=bc, anc=list(scale=~group), dist="weibullPH", link="loglog", mixture = F)
-plot(mixture_covarite_scale)
+non_mixture_covarite_scale = flexsurvcure(Surv(rectime,censrec)~group, data=bc, anc=list(scale=~group), dist="weibullPH", link="loglog", mixture = F)
+plot(non_mixture_covarite_scale)
 ```
