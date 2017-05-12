@@ -12,6 +12,22 @@ install.packages("flexsurv")
 devtools::install_github('jrdnmdhl/flexsurvcure')
 ```
 
+## Supported Distributions
+
+All of the built-in distribution with flexsurvreg are supported, though some currently have issues with convergence and numerical instability.  The following distributions currently seem reliable:
+
+- Exponential (exp)
+- Weibull (weibull, weibullPH)
+- Lognormal (lnorm)
+- Log-Logistic (llogis)
+
+The following distributions are supported, but may not be reliable:
+
+- Gompertz (gompertz)
+- Generalized Gamma (gengamma, gengamma.orig)
+- Generalized F (genf, genf.orig)
+
+
 ## Fitting a mixture cure model
 ```r
 mixture = flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibullPH", link="logistic", mixture = T)
