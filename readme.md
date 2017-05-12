@@ -7,8 +7,7 @@ The development repository for flexsurvcure, an R package for parametric mixture
 
 ```r
 install.packages("flexsurv")
-install.packages("devtools") # if devtools not already installed
-install.packages("flexsurv")
+install.packages("devtools")
 devtools::install_github('jrdnmdhl/flexsurvcure')
 ```
 
