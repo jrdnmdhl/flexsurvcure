@@ -184,7 +184,7 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
     append(
       list(
         formula,
-        data = temp$data,
+        data = data,
         weights = temp$weights,
         subset = temp$subset,
         bhazard = temp$bhazard,

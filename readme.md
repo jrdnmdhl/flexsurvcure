@@ -26,6 +26,7 @@ The following distributions are supported, but may not be reliable:
 - Generalized Gamma (gengamma, gengamma.orig)
 - Generalized F (genf, genf.orig)
 
+Custom distributions can also be used by passing a distribution list (see [flexsurv examples](https://cran.r-project.org/web/packages/flexsurv/vignettes/flexsurv-examples.pdf)).
 
 ## Fitting a mixture cure model
 ```r
