@@ -94,7 +94,14 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
   optim = list()
 
   # Patch the transformations based on link argument
-  dist_list <- flexsurv.dists[[dist]]
+  if (class(dist) == "character") {
+    dist_list <- flexsurv.dists[[dist]]
+  } else if(class(dist) == "list"){
+    dist_list <- dist
+    dist <- dist_list$name
+  } else {
+    stop("Argument 'dist' must be a string or list.")
+  }
   dist_list$name <- paste0(dist_list$name, "_mix")
   n_base_par <- length(dist_list$pars)
   dist_list$pars <- c("theta", dist_list$pars)
