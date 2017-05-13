@@ -71,11 +71,6 @@ expand.inits.args <- function(inits) {
 ##' @param na.action a missing-data filter function, applied after any 'subset'
 ##' argument has been used. Default is \code{options()$na.action}.
 ##' @param dist A string representing one of the built-in distributions of flexsurv.
-##' @param anc An alternative and safer way to model covariates on ancillary
-##' parameters, that is, parameters other than the cure fraction.  This is a
-##' named list of formulae, with the name of each component giving the parameter
-##' to be modelled.  The model above can also be defined as:
-##'
 ##' \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}
 ##' @param link A string representing the link function to use for estimation of the
 ##' cure fraction.  Defaults to logistic.
@@ -86,7 +81,7 @@ expand.inits.args <- function(inits) {
 ##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="lnorm", mixture = FALSE)
 ##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibull", link="loglog")
 ##' @export
-flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.action, anc, link = "logistic", mixture = T, ...) {
+flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.action, link = "logistic", mixture = T, ...) {
   call <- match.call()
   indx <- match(c("formula", "data", "weights", "bhazard", "subset", "na.action"), names(call), nomatch = 0)
   if (indx[1] == 0)
@@ -188,7 +183,6 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
         bhazard = temp$bhazard,
         dist = dist_list,
         dfns = dfns_list,
-        anc = anc,
         ...
       ),
       optim

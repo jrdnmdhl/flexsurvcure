@@ -4,7 +4,7 @@
 \alias{flexsurvcure}
 \title{Mixture and Non-Mixture Parametric Cure Models}
 \usage{
-flexsurvcure(formula, data, weights, bhazard, subset, dist, na.action, anc,
+flexsurvcure(formula, data, weights, bhazard, subset, dist, na.action,
   link = "logistic", mixture = T, ...)
 }
 \arguments{
@@ -56,17 +56,11 @@ survival models.}
 \item{subset}{Vector of integers or logicals specifying the subset of the
 observations to be used in the fit.}
 
-\item{dist}{A string representing one of the built-in distributions of flexsurv.}
+\item{dist}{A string representing one of the built-in distributions of flexsurv.
+\code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}}
 
 \item{na.action}{a missing-data filter function, applied after any 'subset'
 argument has been used. Default is \code{options()$na.action}.}
-
-\item{anc}{An alternative and safer way to model covariates on ancillary
-parameters, that is, parameters other than the cure fraction.  This is a
-named list of formulae, with the name of each component giving the parameter
-to be modelled.  The model above can also be defined as:
-
-\code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}}
 
 \item{link}{A string representing the link function to use for estimation of the
 cure fraction.  Defaults to logistic.}
