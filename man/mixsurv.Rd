@@ -10,33 +10,47 @@
 \alias{Hmixsurv}
 \alias{mean_mixsurv}
 \alias{rmst_mixsurv}
+\alias{pmixsurv}
+\alias{hmixsurv}
+\alias{Hmixsurv}
+\alias{dmixsurv}
+\alias{qmixsurv}
+\alias{rmixsurv}
+\alias{rmst_mixsurv}
+\alias{mean_mixsurv}
 \title{Mixture cure models}
+\usage{
+pmixsurv(pfun, q, theta, ...)
+
+hmixsurv(dfun, pfun, x, theta, ...)
+
+Hmixsurv(pfun, x, theta, ...)
+
+dmixsurv(dfun, pfun, x, theta, ...)
+
+qmixsurv(pfun, p, theta, ...)
+
+rmixsurv(pfun, n, theta, ...)
+
+rmst_mixsurv(pfun, t, theta, ...)
+
+mean_mixsurv(pfun, t, theta, ...)
+}
 \arguments{
 \item{pfun}{The base distribution's cumulative distribution function.}
 
-\item{dfun}{The base distribution's probability density function.}
+\item{theta}{The estimated cure fraction.}
 
-\item{x, q, t}{Vector of times.}
+\item{...}{additional arameters to be passed to the pdf or cdf of the base
+distribution.}
+
+\item{dfun}{The base distribution's probability density function.}
 
 \item{x, q, t}{Vector of times.}
 
 \item{p}{Vector of probabilities.}
 
 \item{n}{Number of random numbers to simulate.}
-
-\item{theta}{The estimated cure fraction.}
-
-\item{...}{Parameters to be passed to the pdf or cdf of the base
-distribution.}
-
-\item{start}{Optional left-truncation time or times.  The returned
-restricted mean survival will be conditioned on survival up to
-this time.}
-
-\item{log, log.p}{Return log density or probability.}
-
-\item{lower.tail}{logical; if TRUE (default), probabilities are \eqn{P(X
-\le x)}{P(X <= x)}, otherwise, \eqn{P(X > x)}{P(X > x)}.}
 }
 \value{
 \code{dmixsurv} gives the density, \code{pmixsurv} gives the
@@ -46,15 +60,19 @@ distribution function, \code{hmixsurv} gives the hazard and
 \code{qmixsurv} gives the quantile function, which is computed by crude
 numerical inversion.
 
-\code{rmixsurv} generates random survival times by using
-\code{qnmixsurv} on a sample of uniform random numbers.  Due to the
-numerical root-finding involved in \code{qnmixsurv}, it is slow compared
-to typical random number generation functions.
+\code{rmixsurv} generates random survival times by using \code{qmixsurv}
+on a sample of uniform random numbers.  Due to the numerical root-finding
+involved in \code{qmixsurv}, it is slow compared to typical random number
+generation functions.
+
+\code{mean_mixsurv} and \code{rmst_mixsurv} give the mean and restricted
+mean survival times, respectively.
 }
 \description{
 Probability density, distribution, quantile, random generation, hazard
-cumulative hazard, mean and restricted mean functions for generic
-mixture cure models
+cumulative hazard, mean, and restricted mean functions for generic
+mixture cure models.  These distribution functions take as arguments
+the corresponding functions of the base distribution used.
 }
 \author{
 Jordan Amdahl <jrdnmdhl@gmail.com>

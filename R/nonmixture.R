@@ -1,26 +1,20 @@
-##' Non-Mixture cure models
+##' Non-Mixture Cure Models
 ##'
 ##' Probability density, distribution, quantile, random generation, hazard
-##' cumulative hazard, mean and restricted mean functions for generic
-##' non-mixture cure models
+##' cumulative hazard, mean, and restricted mean functions for generic
+##' non-mixture cure models.  These distribution functions take as arguments
+##' the corresponding functions of the base distribution used.
 ##'
-##' @aliases dnmixsurv pnmixsurv qnmixsurv rnmixsurv
+##' es dnmixsurv pnmixsurv qnmixsurv rnmixsurv
 ##' hnmixsurv Hnmixsurv mean_nmixsurv rmst_nmixsurv
 ##' @param pfun The base distribution's cumulative distribution function.
 ##' @param dfun The base distribution's probability density function.
-##' @param x,q,t Vector of times.
 ##' @param x,q,t Vector of times.
 ##' @param p Vector of probabilities.
 ##' @param n Number of random numbers to simulate.
 ##' @param theta The estimated cure fraction.
 ##' @param ... Parameters to be passed to the pdf or cdf of the base
 ##' distribution.
-##' @param start Optional left-truncation time or times.  The returned
-##' restricted mean survival will be conditioned on survival up to
-##' this time.
-##' @param log,log.p Return log density or probability.
-##' @param lower.tail logical; if TRUE (default), probabilities are \eqn{P(X
-##' \le x)}{P(X <= x)}, otherwise, \eqn{P(X > x)}{P(X > x)}.
 ##' @return \code{dnmixsurv} gives the density, \code{pnmixsurv} gives the
 ##' distribution function, \code{hnmixsurv} gives the hazard and
 ##' \code{Hnmixsurv} gives the cumulative hazard.
@@ -28,16 +22,20 @@
 ##' \code{qnmixsurv} gives the quantile function, which is computed by crude
 ##' numerical inversion.
 ##'
-##' \code{rnmixsurv} generates random survival times by using
-##' \code{qnmixsurv} on a sample of uniform random numbers.  Due to the
-##' numerical root-finding involved in \code{qnmixsurv}, it is slow compared
-##' to typical random number generation functions.
+##' \code{rnmixsurv} generates random survival times by using \code{qnmixsurv}
+##' on a sample of uniform random numbers.  Due to the numerical root-finding
+##' involved in \code{qnmixsurv}, it is slow compared to typical random number
+##' generation functions.
+##'
+##' \code{mean_nmixsurv} and \code{rmst_nmixsurv} give the mean and restricted
+##' mean survival times, respectively.
 ##' @author Jordan Amdahl <jrdnmdhl@gmail.com>
 ##' @keywords distribution
 ##' @name nmixsurv
 NULL
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 pnmixsurv = function(pfun, q, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -53,7 +51,8 @@ pnmixsurv = function(pfun, q, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 hnmixsurv = function(dfun,x, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -66,7 +65,8 @@ hnmixsurv = function(dfun,x, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 Hnmixsurv = function(pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
@@ -81,7 +81,8 @@ Hnmixsurv = function(pfun, x, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 dnmixsurv = function(dfun, pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
@@ -99,7 +100,8 @@ dnmixsurv = function(dfun, pfun, x, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 qnmixsurv = function(pfun, p, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -122,7 +124,8 @@ qnmixsurv = function(pfun, p, theta, ...) {
 }
 
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 rnmixsurv = function(pfun, n, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -144,7 +147,8 @@ rnmixsurv = function(pfun, n, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 rmst_nmixsurv = function(pfun, t, theta, ...) {
   args <- list(...)
   out <- do.call(
@@ -161,7 +165,8 @@ rmst_nmixsurv = function(pfun, t, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname nmixsurv
 mean_nmixsurv = function(pfun, t, theta, ...) {
   args <- list(...)
   args$start <- 0

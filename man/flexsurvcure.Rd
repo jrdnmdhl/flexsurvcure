@@ -4,8 +4,8 @@
 \alias{flexsurvcure}
 \title{Mixture and Non-Mixture Parametric Cure Models}
 \usage{
-flexsurvcure(formula, data, weights, bhazard, subset, dist, link = "logistic",
-  mixture = T, ...)
+flexsurvcure(formula, data, weights, bhazard, subset, dist, na.action, anc,
+  link = "logistic", mixture = T, ...)
 }
 \arguments{
 \item{formula}{A formula expression in conventional R linear modelling
@@ -38,7 +38,7 @@ However, if the names of the ancillary parameters clash with any real
 functions that might be used in formulae (such as \code{I()}, or
 \code{factor()}), then those functions will not work in the formula.  A
 safer way to model covariates on ancillary parameters is through the
-\code{anc} argument to \code{flexsurv::flexsurvreg}.
+\code{anc} argument to \code{\link{flexsurvreg}}.
 
 \code{\link{survreg}} users should also note that the function
 \code{strata()} is ignored, so that any covariates surrounded by
@@ -58,10 +58,8 @@ observations to be used in the fit.}
 
 \item{dist}{A string representing one of the built-in distributions of flexsurv.}
 
-\item{link}{A string representing the link function to use for estimation of the
-cure fraction.  Defaults to logistic.}
-
-\item{mixture}{optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.}
+\item{na.action}{a missing-data filter function, applied after any 'subset'
+argument has been used. Default is \code{options()$na.action}.}
 
 \item{anc}{An alternative and safer way to model covariates on ancillary
 parameters, that is, parameters other than the cure fraction.  This is a
@@ -70,10 +68,33 @@ to be modelled.  The model above can also be defined as:
 
 \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}}
 
-\item{na.action}{a missing-data filter function, applied after any 'subset'
-argument has been used. Default is \code{options()$na.action}.}
+\item{link}{A string representing the link function to use for estimation of the
+cure fraction.  Defaults to logistic.}
+
+\item{mixture}{optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.}
+
+\item{...}{other arguments to be passed to \code{\link{flexsurvreg}}.}
 }
 \description{
 Mixture and non-mixture cure models using flexible base distribtuions
 from the flexsurv package.
+}
+\details{
+This function works as a wrapper around \code{\link{flexsurvreg}} by
+dynamically constructing a custom distribution using wrappers to the
+pdf and cdf functions.
+
+In a parametric mixture model, it is assumed that there exists a group of individuals
+who experience no excess mortality, with the proportion of such individuals being given
+by the cure fraction parameter, and a parametric distribution representing the excess
+mortality for the remaining individuals.
+
+By contrast, a parametric non-mixture model simply rescales an existing parametric
+distribution such that the probability of survival asymptotically approaches the
+cure fraction parameter as time approaches infinity.
+}
+\examples{
+flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibull", anc=list(scale=~group))
+flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="lnorm", mixture = FALSE)
+flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibull", link="loglog")
 }

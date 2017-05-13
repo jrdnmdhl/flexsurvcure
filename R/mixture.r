@@ -1,26 +1,20 @@
 ##' Mixture cure models
 ##'
 ##' Probability density, distribution, quantile, random generation, hazard
-##' cumulative hazard, mean and restricted mean functions for generic
-##' mixture cure models
+##' cumulative hazard, mean, and restricted mean functions for generic
+##' mixture cure models.  These distribution functions take as arguments
+##' the corresponding functions of the base distribution used.
 ##'
 ##' @aliases dmixsurv pmixsurv qmixsurv rmixsurv
 ##' hmixsurv Hmixsurv mean_mixsurv rmst_mixsurv
 ##' @param pfun The base distribution's cumulative distribution function.
 ##' @param dfun The base distribution's probability density function.
 ##' @param x,q,t Vector of times.
-##' @param x,q,t Vector of times.
 ##' @param p Vector of probabilities.
 ##' @param n Number of random numbers to simulate.
 ##' @param theta The estimated cure fraction.
-##' @param ... Parameters to be passed to the pdf or cdf of the base
+##' @param ... additional arameters to be passed to the pdf or cdf of the base
 ##' distribution.
-##' @param start Optional left-truncation time or times.  The returned
-##' restricted mean survival will be conditioned on survival up to
-##' this time.
-##' @param log,log.p Return log density or probability.
-##' @param lower.tail logical; if TRUE (default), probabilities are \eqn{P(X
-##' \le x)}{P(X <= x)}, otherwise, \eqn{P(X > x)}{P(X > x)}.
 ##' @return \code{dmixsurv} gives the density, \code{pmixsurv} gives the
 ##' distribution function, \code{hmixsurv} gives the hazard and
 ##' \code{Hmixsurv} gives the cumulative hazard.
@@ -28,16 +22,20 @@
 ##' \code{qmixsurv} gives the quantile function, which is computed by crude
 ##' numerical inversion.
 ##'
-##' \code{rmixsurv} generates random survival times by using
-##' \code{qnmixsurv} on a sample of uniform random numbers.  Due to the
-##' numerical root-finding involved in \code{qnmixsurv}, it is slow compared
-##' to typical random number generation functions.
+##' \code{rmixsurv} generates random survival times by using \code{qmixsurv}
+##' on a sample of uniform random numbers.  Due to the numerical root-finding
+##' involved in \code{qmixsurv}, it is slow compared to typical random number
+##' generation functions.
+##'
+##' \code{mean_mixsurv} and \code{rmst_mixsurv} give the mean and restricted
+##' mean survival times, respectively.
 ##' @author Jordan Amdahl <jrdnmdhl@gmail.com>
 ##' @keywords distribution
 ##' @name mixsurv
 NULL
 
-#' @export
+##' @export
+##' @rdname mixsurv
 pmixsurv = function(pfun, q, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -53,7 +51,8 @@ pmixsurv = function(pfun, q, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname mixsurv
 hmixsurv = function(dfun, pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
@@ -71,7 +70,8 @@ hmixsurv = function(dfun, pfun, x, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname mixsurv
 Hmixsurv = function(pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
@@ -86,7 +86,8 @@ Hmixsurv = function(pfun, x, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname mixsurv
 dmixsurv = function(dfun, pfun, x, theta, ...) {
   dots <- list(...)
   pargs <- dots
@@ -104,7 +105,8 @@ dmixsurv = function(dfun, pfun, x, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname mixsurv
 qmixsurv = function(pfun, p, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -127,7 +129,8 @@ qmixsurv = function(pfun, p, theta, ...) {
 }
 
 
-#' @export
+##' @export
+##' @rdname mixsurv
 rmixsurv = function(pfun, n, theta, ...) {
   dots <- list(...)
   args <- dots
@@ -149,7 +152,8 @@ rmixsurv = function(pfun, n, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname mixsurv
 rmst_mixsurv = function(pfun, t, theta, ...) {
   args <- list(...)
   out <- do.call(
@@ -166,7 +170,8 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
   return(out)
 }
 
-#' @export
+##' @export
+##' @rdname mixsurv
 mean_mixsurv = function(pfun, t, theta, ...) {
   args <- list(...)
   args$start <- 0

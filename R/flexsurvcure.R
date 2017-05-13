@@ -1,4 +1,3 @@
-
 # Taken from flexsurv, needed to wrap init functions of base distributions
 
 expand.inits.args <- function(inits) {
@@ -13,17 +12,18 @@ expand.inits.args <- function(inits) {
 ##' Mixture and non-mixture cure models using flexible base distribtuions
 ##' from the flexsurv package.
 ##'
-##' This function works as a wrapper around \code{flexsurv::flexsurvreg} by
-##' dynamically constructing a custom distribution using
-##' \code{\link{dsurvmix}}, \code{\link{psurvmix}}}.
+##' This function works as a wrapper around \code{\link{flexsurvreg}} by
+##' dynamically constructing a custom distribution using wrappers to the
+##' pdf and cdf functions.
 ##'
-##' In a parametric mixture model, it is assume that there is a group of individuals
-##' who experience no excess mortality, with the proportion of patients being given
-##' by the estimated cure fraction, and a parametric distribution representing excess
+##' In a parametric mixture model, it is assumed that there exists a group of individuals
+##' who experience no excess mortality, with the proportion of such individuals being given
+##' by the cure fraction parameter, and a parametric distribution representing the excess
 ##' mortality for the remaining individuals.
 ##'
 ##' By contrast, a parametric non-mixture model simply rescales an existing parametric
-##' distribution such that survival reaches an asyptote >0.
+##' distribution such that the probability of survival asymptotically approaches the
+##' cure fraction parameter as time approaches infinity.
 ##'
 ##' @param formula A formula expression in conventional R linear modelling
 ##' syntax. The response must be a survival object as returned by the
@@ -55,17 +55,11 @@ expand.inits.args <- function(inits) {
 ##' functions that might be used in formulae (such as \code{I()}, or
 ##' \code{factor()}), then those functions will not work in the formula.  A
 ##' safer way to model covariates on ancillary parameters is through the
-##' \code{anc} argument to \code{flexsurv::flexsurvreg}.
+##' \code{anc} argument to \code{\link{flexsurvreg}}.
 ##'
 ##' \code{\link{survreg}} users should also note that the function
 ##' \code{strata()} is ignored, so that any covariates surrounded by
 ##' \code{strata()} are applied to the location parameter.
-##' @param anc An alternative and safer way to model covariates on ancillary
-##' parameters, that is, parameters other than the cure fraction.  This is a
-##' named list of formulae, with the name of each component giving the parameter
-##' to be modelled.  The model above can also be defined as:
-##'
-##' \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}
 ##' @param data A data frame in which to find variables supplied in
 ##' \code{formula}.  If not given, the variables should be in the working
 ##' environment.
@@ -77,11 +71,22 @@ expand.inits.args <- function(inits) {
 ##' @param na.action a missing-data filter function, applied after any 'subset'
 ##' argument has been used. Default is \code{options()$na.action}.
 ##' @param dist A string representing one of the built-in distributions of flexsurv.
+##' @param anc An alternative and safer way to model covariates on ancillary
+##' parameters, that is, parameters other than the cure fraction.  This is a
+##' named list of formulae, with the name of each component giving the parameter
+##' to be modelled.  The model above can also be defined as:
+##'
+##' \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}
 ##' @param link A string representing the link function to use for estimation of the
 ##' cure fraction.  Defaults to logistic.
 ##' @param mixture optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.
+##' @param ... other arguments to be passed to \code{\link{flexsurvreg}}.
+##' @examples
+##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibull", anc=list(scale=~group))
+##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="lnorm", mixture = FALSE)
+##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibull", link="loglog")
 ##' @export
-flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, link = "logistic", mixture = T, ...) {
+flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.action, anc, link = "logistic", mixture = T, ...) {
   call <- match.call()
   indx <- match(c("formula", "data", "weights", "bhazard", "subset", "na.action"), names(call), nomatch = 0)
   if (indx[1] == 0)
