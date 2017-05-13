@@ -22,7 +22,7 @@ test_that("Mean survival works", {
 test_that("RMST Works", {
   # MIXTURE MODELS
   # RMST should be equal to duration * theta + (1-theta) * uncured_rmst
-  t_rmst <- seq(from=0, to=10000, by=2500)
+  t_rmst <- 10000
   mix_some_cured <- flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="logistic", dist="gompertz")
   mix_some_cured_res <- summary(mix_some_cured, t=t_rmst, type = "rmst", tidy=T)
   mix_some_cured_res_u <- rmst_gompertz(
