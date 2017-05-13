@@ -160,8 +160,8 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
       },
       h = function(x, ...) hmixsurv(dfun, pfun, x, ...),
       q = function(p, ...) qmixsurv(pfun, p, ...),
-      mean = function(t, ...) rmst_mixsurv(pfun, t, ...),
-      rmst = function(t, ...) mean_mixsurv(pfun, t, ...)
+      mean = function(...) mean_mixsurv(pfun, ...),
+      rmst = function(t, ...) rmst_mixsurv(pfun, t, ...)
     )
   } else {
     dfns_list = list(
@@ -173,8 +173,8 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
       },
       h = function(x, ...) hnmixsurv(dfun, x, ...),
       q = function(p, ...) qnmixsurv(pfun, p, ...),
-      mean = function(t, ...) rmst_nmixsurv(pfun, t, ...),
-      rmst = function(t, ...) mean_nmixsurv(pfun, t, ...)
+      mean = function(...) mean_nmixsurv(pfun, ...),
+      rmst = function(t, ...) rmst_nmixsurv(pfun, t, ...)
     )
   }
 

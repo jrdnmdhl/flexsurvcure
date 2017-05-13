@@ -34,7 +34,7 @@ rmixsurv(pfun, n, theta, ...)
 
 rmst_mixsurv(pfun, t, theta, ...)
 
-mean_mixsurv(pfun, t, theta, ...)
+mean_mixsurv(pfun, theta, ...)
 }
 \arguments{
 \item{pfun}{The base distribution's cumulative distribution function.}

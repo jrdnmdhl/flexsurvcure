@@ -172,20 +172,23 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
 
 ##' @export
 ##' @rdname mixsurv
-mean_mixsurv = function(pfun, t, theta, ...) {
-  args <- list(...)
-  args$start <- 0
-  out <- do.call(
-    rmst_generic,
-    append(
-      list(
-        function(...) pmixsurv(pfun, ...),
-        t = t,
-        theta = theta
-      ),
-      args
+mean_mixsurv = function(pfun, theta, ...) {
+  if(theta > 0) {
+    out <- Inf
+  }else {
+    args <- list(...)
+    out <- do.call(
+      rmst_generic,
+      append(
+        list(
+          pfun,
+          t = Inf,
+          start = 0
+        ),
+        args
+      )
     )
-  )
+  }
   return(out)
 }
 
