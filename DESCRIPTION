@@ -3,12 +3,11 @@ Title: Flexible Parametric Cure Models
 Version: 0.0.0.9000
 Authors@R: person("Jordan", "Amdahl", email = "jrdnmdhl@gmail.com", role = c("aut", "cre"))
 Description: Flexible parametric mixture and non-mixture cure models for time-to-event data.
-Depends: R (>= 3.3.2)
-Suggests: testthat
-Depends: survival, flexsurv
+Depends: survival , flexsurv
+Suggests: testthat, knitr, rmarkdown
 Imports: gtools
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat
+VignetteBuilder: knitr

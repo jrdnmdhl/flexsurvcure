@@ -1,0 +1,42 @@
+---
+title: "Parametric Cure Models"
+author: "Jordan Amdahl"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Parametric Cure Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+Parametric cure models are a type of parametric survival model model in wich it is assumed that there are a proportion of subjects who will not experience the event. In a mixture cure model, these 'cured' and 'uncured' subjects are modeled separately, with the cured individuals subject to no excess risk and the uncured individuals subject to excess risk modeled using a parametric survival distribution. In a non-mixture model, a parametric survival distribution is scaled such that survival asymtpotically approaches the cure fraction.
+
+
+# Mixture Cure Model
+
+The following code fits a mixture cure model to the `bc` dataset from `flexsurv` using a Weibull distribution and a logistic link function for the cure fraction:
+
+```{r, warning=FALSE, message=FALSE}
+library(flexsurvcure)
+cure_model <- flexsurvcure(Surv(rectime, censrec)~group, data=bc, link="logistic", dist="weibullPH", mixture=T)
+print(cure_model)
+```
+
+Model results can be displayed graphically using the `plot` S3 method:
+```{r, warning=FALSE, message=FALSE}
+plot(cure_model)
+```
+
+Predicted survival probabilities can also be generated using the `summary` S3 method:
+```{r, warning=FALSE, message=FALSE}
+summary(cure_model, t=seq(from=0,to=3000,by=1000), type="survival", tidy=T)
+```
+
+More complex models may be fitted by adding covariates to the parametric distribution used to model the uncured individuals:
+```{r, warning=FALSE, message=FALSE}
+cure_model_complex <- flexsurvcure(Surv(rectime, censrec)~group, data=bc, link="logistic", dist="weibullPH", mixture=T, anc=list(scale=~group))
+print(cure_model)
+plot(cure)
+```

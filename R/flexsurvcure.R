@@ -188,6 +188,7 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
         bhazard = temp$bhazard,
         dist = dist_list,
         dfns = dfns_list,
+        anc = anc,
         ...
       ),
       optim
