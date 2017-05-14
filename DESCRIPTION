@@ -1,6 +1,6 @@
 Package: flexsurvcure
 Title: Flexible Parametric Cure Models
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: person("Jordan", "Amdahl", email = "jrdnmdhl@gmail.com", role = c("aut", "cre"))
 Description: Flexible parametric mixture and non-mixture cure models for time-to-event data.
 Depends: survival , flexsurv
