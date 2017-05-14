@@ -8,7 +8,7 @@ flexsurvcure(formula, data, weights, bhazard, subset, dist, na.action,
   link = "logistic", mixture = T, ...)
 }
 \arguments{
-\item{formula}{A formula expression in conventional R linear modelling
+\item{formula}{A formula expression in conventional R linear modeling
 syntax. The response must be a survival object as returned by the
 \code{\link{Surv}} function, and any covariates are given on the right-hand
 side.  For example,
@@ -70,7 +70,7 @@ cure fraction.  Defaults to logistic.}
 \item{...}{other arguments to be passed to \code{\link{flexsurvreg}}.}
 }
 \description{
-Mixture and non-mixture cure models using flexible base distribtuions
+Mixture and non-mixture cure models using flexible base distributions
 from the flexsurv package.
 }
 \details{

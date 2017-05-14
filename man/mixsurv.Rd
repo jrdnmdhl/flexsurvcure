@@ -41,7 +41,7 @@ mean_mixsurv(pfun, theta, ...)
 
 \item{theta}{The estimated cure fraction.}
 
-\item{...}{additional arameters to be passed to the pdf or cdf of the base
+\item{...}{additional parameters to be passed to the pdf or cdf of the base
 distribution.}
 
 \item{dfun}{The base distribution's probability density function.}
