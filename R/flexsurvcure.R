@@ -9,7 +9,7 @@ expand.inits.args <- function(inits) {
 
 #' Mixture and Non-Mixture Parametric Cure Models
 ##'
-##' Mixture and non-mixture cure models using flexible base distribtuions
+##' Mixture and non-mixture cure models using flexible base distributions
 ##' from the flexsurv package.
 ##'
 ##' This function works as a wrapper around \code{\link{flexsurvreg}} by
@@ -25,7 +25,7 @@ expand.inits.args <- function(inits) {
 ##' distribution such that the probability of survival asymptotically approaches the
 ##' cure fraction parameter as time approaches infinity.
 ##'
-##' @param formula A formula expression in conventional R linear modelling
+##' @param formula A formula expression in conventional R linear modeling
 ##' syntax. The response must be a survival object as returned by the
 ##' \code{\link{Surv}} function, and any covariates are given on the right-hand
 ##' side.  For example,

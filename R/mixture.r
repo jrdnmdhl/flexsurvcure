@@ -13,7 +13,7 @@
 ##' @param p Vector of probabilities.
 ##' @param n Number of random numbers to simulate.
 ##' @param theta The estimated cure fraction.
-##' @param ... additional arameters to be passed to the pdf or cdf of the base
+##' @param ... additional parameters to be passed to the pdf or cdf of the base
 ##' distribution.
 ##' @return \code{dmixsurv} gives the density, \code{pmixsurv} gives the
 ##' distribution function, \code{hmixsurv} gives the hazard and
