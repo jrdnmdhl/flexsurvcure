@@ -160,9 +160,9 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
     rmst_generic,
     append(
       list(
-        function(...) pmixsurv(pfun, ...),
+        function(q, ...) pmixsurv(pfun, q, ...),
         t = t,
-        theta = theta
+        theta=theta
       ),
       args
     )

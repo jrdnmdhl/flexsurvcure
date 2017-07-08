@@ -57,7 +57,6 @@ hnmixsurv = function(dfun,x, theta, ...) {
   dots <- list(...)
   args <- dots
   args$log <- F
-  u_pdf <-
   out <- -log(theta) * do.call(dfun, append(list(x), args))
   if (!is.null(dots$log) && dots$log) {
     out <- log(out)
@@ -155,9 +154,9 @@ rmst_nmixsurv = function(pfun, t, theta, ...) {
     rmst_generic,
     append(
       list(
-        function(...) pnmixsurv(pfun, ...),
+        function(q, ...) pnmixsurv(pfun, q, ...),
         t = t,
-        theta = theta
+        theta=theta
       ),
       args
     )
