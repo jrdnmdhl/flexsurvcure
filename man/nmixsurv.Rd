@@ -20,9 +20,9 @@ Hnmixsurv(pfun, x, theta, ...)
 
 dnmixsurv(dfun, pfun, x, theta, ...)
 
-qnmixsurv(pfun, p, theta, ...)
+qnmixsurv(qfun, p, theta, ...)
 
-rnmixsurv(pfun, n, theta, ...)
+rnmixsurv(qfun, n, theta, ...)
 
 rmst_nmixsurv(pfun, t, theta, ...)
 
@@ -39,6 +39,8 @@ distribution.}
 \item{dfun}{The base distribution's probability density function.}
 
 \item{x, q, t}{Vector of times.}
+
+\item{qfun}{The base distribution's quantile function.}
 
 \item{p}{Vector of probabilities.}
 

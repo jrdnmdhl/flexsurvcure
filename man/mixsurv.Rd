@@ -10,14 +10,6 @@
 \alias{Hmixsurv}
 \alias{mean_mixsurv}
 \alias{rmst_mixsurv}
-\alias{pmixsurv}
-\alias{hmixsurv}
-\alias{Hmixsurv}
-\alias{dmixsurv}
-\alias{qmixsurv}
-\alias{rmixsurv}
-\alias{rmst_mixsurv}
-\alias{mean_mixsurv}
 \title{Mixture cure models}
 \usage{
 pmixsurv(pfun, q, theta, ...)
@@ -28,9 +20,9 @@ Hmixsurv(pfun, x, theta, ...)
 
 dmixsurv(dfun, pfun, x, theta, ...)
 
-qmixsurv(pfun, p, theta, ...)
+qmixsurv(qfun, p, theta, ...)
 
-rmixsurv(pfun, n, theta, ...)
+rmixsurv(qfun, n, theta, ...)
 
 rmst_mixsurv(pfun, t, theta, ...)
 
@@ -47,6 +39,8 @@ distribution.}
 \item{dfun}{The base distribution's probability density function.}
 
 \item{x, q, t}{Vector of times.}
+
+\item{qfun}{The base distribution's quantile function.}
 
 \item{p}{Vector of probabilities.}
 

@@ -9,6 +9,7 @@
 ##' hmixsurv Hmixsurv mean_mixsurv rmst_mixsurv
 ##' @param pfun The base distribution's cumulative distribution function.
 ##' @param dfun The base distribution's probability density function.
+##' @param qfun The base distribution's quantile function.
 ##' @param x,q,t Vector of times.
 ##' @param p Vector of probabilities.
 ##' @param n Number of random numbers to simulate.
@@ -107,48 +108,30 @@ dmixsurv = function(dfun, pfun, x, theta, ...) {
 
 ##' @export
 ##' @rdname mixsurv
-qmixsurv = function(pfun, p, theta, ...) {
+qmixsurv = function(qfun, p, theta, ...) {
+  inv_p <- 1 - p
   dots <- list(...)
   args <- dots
   args$lower.tail <- F
   args$log.p <- F
-  if (dots$log.p) p <- exp(p)
-  if (!dots$lower.tail) p <- 1 - p
-  out <- do.call(
-    qgeneric,
-    append(
-      list(
-        function(...) pmixsurv(pfun, ...),
-        p = p,
-        theta = theta
-      ),
-      args
-    )
-  )
+  if (theta == 0) {
+    out <- do.call(qfun, append(list(inv_p), args))
+  } else {
+    uncured <- inv_p > theta
+    out <- rep(Inf, length(inv_p))
+    out[uncured] <- do.call(qfun, append(list((inv_p[uncured] - theta) / (1 - theta)), args))
+  }
   return(out)
 }
 
 
 ##' @export
 ##' @rdname mixsurv
-rmixsurv = function(pfun, n, theta, ...) {
-  dots <- list(...)
-  args <- dots
-  args$lower.tail <- F
-  args$log.p <- F
-  if (dots$log.p) p <- exp(p)
-  if (!dots$lower.tail) p <- 1 - p
-  out <- do.call(
-    qgeneric,
-    append(
-      list(
-        function(...) pmixsurv(pfun, ...),
-        p = runif(n),
-        theta = theta
-      ),
-      args
-    )
-  )
+rmixsurv = function(qfun, n, theta, ...) {
+
+  # Plug random uniform into quantile function
+  out <- qmixsurv(qfun, runif(n = n), theta, ...)
+
   return(out)
 }
 
@@ -162,7 +145,7 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
       list(
         function(q, ...) pmixsurv(pfun, q, ...),
         t = t,
-        theta=theta
+        theta = theta
       ),
       args
     )
@@ -173,7 +156,7 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
 ##' @export
 ##' @rdname mixsurv
 mean_mixsurv = function(pfun, theta, ...) {
-  if(theta > 0) {
+  if (theta > 0) {
     out <- Inf
   }else {
     args <- list(...)

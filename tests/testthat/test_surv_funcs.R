@@ -80,3 +80,47 @@ test_that("Hazard rate projections", {
   nmix_some_cured_res <- summary(nmix_some_cured, t=Inf, type = "hazard", tidy=T)
   expect_equal(as.numeric(nmix_some_cured_res)[2], 0)
 })
+
+test_that("Random sampling", {
+
+  # MIXTURE MODELS
+  expect_equal(mean(rmixsurv(qexp, n = 1000000, theta = 0.0, rate = 1/50)), 50, tolerance = 1e-2)
+  expect_equal(median(rmixsurv(qexp, n = 10000000, theta = 0.20, rate = 1/50)), qexp(0.625, rate = 1/50), tolerance = 1e-1)
+
+  # NON-MIXTURE MODELS
+  expect_equal(mean(rnmixsurv(qexp, n = 1000000, theta = 0.0, rate = 1/50)), 50, tolerance = 1e-2)
+
+})
+
+
+
+test_that("Quantile functions", {
+
+  # MIXTURE MODELS
+  expect_equal(
+    qmixsurv(qexp, c(0.25, 0.5, 0.75), theta = 0.2, rate = 1/50),
+    qgeneric(function(...) pmixsurv(pexp, ...), c(0.25, 0.5, 0.75), theta = 0.2, rate = 1/50),
+    tolerance = 1e-4
+  )
+
+  expect_equal(
+    qmixsurv(qweibull, c(0.25, 0.5, 0.75), theta = 0.15, shape = 1.2, scale = 50),
+    qgeneric(function(...) pmixsurv(pweibull, ...), c(0.25, 0.5, 0.75), theta = 0.15, shape = 1.2, scale = 50),
+    tolerance = 1e-4
+  )
+
+  # NON-MIXTURE MODELS
+  expect_equal(
+    qnmixsurv(qexp, c(0.25, 0.5, 0.75), theta = 0.2, rate = 1/50),
+    qgeneric(function(...) pnmixsurv(pexp, ...), c(0.25, 0.5, 0.75), theta = 0.2, rate = 1/50),
+    tolerance = 1e-4
+  )
+
+  expect_equal(
+    qnmixsurv(qweibull, c(0.25, 0.5, 0.75), theta = 0.15, shape = 1.2, scale = 50),
+    qgeneric(function(...) pnmixsurv(pweibull, ...), c(0.25, 0.5, 0.75), theta = 0.15, shape = 1.2, scale = 50),
+    tolerance = 1e-4
+  )
+
+})
+

@@ -9,6 +9,7 @@
 ##' hnmixsurv Hnmixsurv mean_nmixsurv rmst_nmixsurv
 ##' @param pfun The base distribution's cumulative distribution function.
 ##' @param dfun The base distribution's probability density function.
+##' @param qfun The base distribution's quantile function.
 ##' @param x,q,t Vector of times.
 ##' @param p Vector of probabilities.
 ##' @param n Number of random numbers to simulate.
@@ -101,48 +102,43 @@ dnmixsurv = function(dfun, pfun, x, theta, ...) {
 
 ##' @export
 ##' @rdname nmixsurv
-qnmixsurv = function(pfun, p, theta, ...) {
+qnmixsurv = function(qfun, p, theta, ...) {
+  inv_p <- 1 - p
   dots <- list(...)
   args <- dots
   args$lower.tail <- F
   args$log.p <- F
-  if (dots$log.p) p <- exp(p)
-  if (!dots$lower.tail) p <- 1 - p
-  out <- do.call(
-    qgeneric,
-    append(
-      list(
-        function(...) pnmixsurv(pfun, ...),
-        p = p,
-        theta = theta
-      ),
-      args
-    )
-  )
+  uncured <- inv_p > theta
+  out <- rep(Inf, length(inv_p))
+  if (theta == 0) {
+    # If no cure then just use base qfun
+    out <- do.call(qfun, append(list(inv_p), args))
+  } else {
+    # Calculations below are meant to map the quantile distribution of the base
+    # distribution to the quantile distribution of the cure model using the
+    # following algebra:
+    #
+    # S(t) = theta ^ (1 - Su(t))
+    # ln[S(t)] = ln[theta ^ (1 - Su(t))]
+    # ln[S(t)] = (1 - Su(t)) * ln[theta]
+    # ln[S(t)] / ln[theta] = 1 - Su(t)
+    # Su(t) = 1 - ln[S(t)] / ln[theta]
+    #
+    # Where Su(t) is the baseline survival distribution
+    p_surv_to_lookup <- 1 - (log(inv_p[uncured]) / log(theta))
+    out[uncured] <- do.call(qfun, append(list(p_surv_to_lookup), args))
+  }
   return(out)
 }
 
 
 ##' @export
 ##' @rdname nmixsurv
-rnmixsurv = function(pfun, n, theta, ...) {
-  dots <- list(...)
-  args <- dots
-  args$lower.tail <- F
-  args$log.p <- F
-  if (dots$log.p) p <- exp(p)
-  if (!dots$lower.tail) p <- 1 - p
-  out <- do.call(
-    qgeneric,
-    append(
-      list(
-        function(...) pnmixsurv(pfun, ...),
-        p = runif(n),
-        theta = theta
-      ),
-      args
-    )
-  )
+rnmixsurv = function(qfun, n, theta, ...) {
+
+  # Plug random uniform into quantile function
+  out <- qnmixsurv(qfun, runif(n = n), theta, ...)
+
   return(out)
 }
 
@@ -156,7 +152,7 @@ rmst_nmixsurv = function(pfun, t, theta, ...) {
       list(
         function(q, ...) pnmixsurv(pfun, q, ...),
         t = t,
-        theta=theta
+        theta = theta
       ),
       args
     )
@@ -167,7 +163,7 @@ rmst_nmixsurv = function(pfun, t, theta, ...) {
 ##' @export
 ##' @rdname nmixsurv
 mean_nmixsurv = function(pfun, theta, ...) {
-  if(theta > 0) {
+  if (theta > 0) {
     out <- Inf
   }else {
     args <- list(...)
