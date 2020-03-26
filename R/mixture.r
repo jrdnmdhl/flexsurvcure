@@ -9,11 +9,12 @@
 ##' hmixsurv Hmixsurv mean_mixsurv rmst_mixsurv
 ##' @param pfun The base distribution's cumulative distribution function.
 ##' @param dfun The base distribution's probability density function.
+##' @param qfun The base distribution's quantile function.
 ##' @param x,q,t Vector of times.
 ##' @param p Vector of probabilities.
 ##' @param n Number of random numbers to simulate.
 ##' @param theta The estimated cure fraction.
-##' @param ... additional arameters to be passed to the pdf or cdf of the base
+##' @param ... additional parameters to be passed to the pdf or cdf of the base
 ##' distribution.
 ##' @return \code{dmixsurv} gives the density, \code{pmixsurv} gives the
 ##' distribution function, \code{hmixsurv} gives the hazard and
@@ -78,7 +79,7 @@ Hmixsurv = function(pfun, x, theta, ...) {
   pargs$lower.tail <- F
   pargs$log.p <- F
   pargs$log <- NULL
-  surv <- do.call(pmixsurv, append(list(pfun, x), pargs))
+  surv <- do.call(pmixsurv, append(list(pfun, x, theta), pargs))
   out <- -log(surv)
   if (!is.null(dots$log) && dots$log) {
     out <- log(out)
@@ -107,48 +108,30 @@ dmixsurv = function(dfun, pfun, x, theta, ...) {
 
 ##' @export
 ##' @rdname mixsurv
-qmixsurv = function(pfun, p, theta, ...) {
+qmixsurv = function(qfun, p, theta, ...) {
+  inv_p <- 1 - p
   dots <- list(...)
   args <- dots
   args$lower.tail <- F
   args$log.p <- F
-  if (dots$log.p) p <- exp(p)
-  if (!dots$lower.tail) p <- 1 - p
-  out <- do.call(
-    qgeneric,
-    append(
-      list(
-        function(...) pmixsurv(pfun, ...),
-        p = p,
-        theta = theta
-      ),
-      args
-    )
-  )
+  if (theta == 0) {
+    out <- do.call(qfun, append(list(inv_p), args))
+  } else {
+    uncured <- inv_p > theta
+    out <- rep(Inf, length(inv_p))
+    out[uncured] <- do.call(qfun, append(list((inv_p[uncured] - theta) / (1 - theta)), args))
+  }
   return(out)
 }
 
 
 ##' @export
 ##' @rdname mixsurv
-rmixsurv = function(pfun, n, theta, ...) {
-  dots <- list(...)
-  args <- dots
-  args$lower.tail <- F
-  args$log.p <- F
-  if (dots$log.p) p <- exp(p)
-  if (!dots$lower.tail) p <- 1 - p
-  out <- do.call(
-    qgeneric,
-    append(
-      list(
-        function(...) pmixsurv(pfun, ...),
-        p = runif(n),
-        theta = theta
-      ),
-      args
-    )
-  )
+rmixsurv = function(qfun, n, theta, ...) {
+
+  # Plug random uniform into quantile function
+  out <- qmixsurv(qfun, runif(n = n), theta, ...)
+
   return(out)
 }
 
@@ -160,7 +143,7 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
     rmst_generic,
     append(
       list(
-        function(...) pmixsurv(pfun, ...),
+        function(q, ...) pmixsurv(pfun, q, ...),
         t = t,
         theta = theta
       ),
@@ -173,7 +156,7 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
 ##' @export
 ##' @rdname mixsurv
 mean_mixsurv = function(pfun, theta, ...) {
-  if(theta > 0) {
+  if (theta > 0) {
     out <- Inf
   }else {
     args <- list(...)
