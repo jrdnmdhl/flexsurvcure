@@ -6,7 +6,11 @@ Authors@R: person("Jordan", "Amdahl", email = "jrdnmdhl@gmail.com", role = c("au
 Maintainer: Jordan Amdahl <jrdnmdhl@gmail.com>
 Description: Flexible parametric mixture and non-mixture cure models for time-to-event data.
 Depends: survival , flexsurv
-Suggests: testthat, knitr, rmarkdown
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown,
+    covr
 URL: https://github.com/jrdnmdhl/flexsurvcure
 BugReports: https://github.com/jrdnmdhl/flexsurvcure/issues
 Imports: gtools
