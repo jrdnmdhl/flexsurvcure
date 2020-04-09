@@ -73,7 +73,7 @@ expand.inits.args <- function(inits) {
 ##' @param dist A string representing one of the built-in distributions of flexsurv.
 ##' \code{Surv(time, dead) ~ age + treat, anc = list(shape = ~ sex + treat)}
 ##' @param link A string representing the link function to use for estimation of the
-##' cure fraction.  Defaults to logistic.
+##' cure fraction.  Defaults to "logistic", but also supports "loglog", "probit", and "identity".
 ##' @param mixture optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.
 ##' @param ... other arguments to be passed to \code{\link{flexsurvreg}}.
 ##' @examples
@@ -113,6 +113,9 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
   } else if(link == "loglog") {
     dist_list$transforms <- append(list(function(x) log(-log(x))), dist_list$transforms)
     dist_list$inv.transforms <- append(list(function(x) exp(-exp(x))), dist_list$inv.transforms)
+  } else if (link == "probit") {
+    dist_list$transforms <- append(list(qnorm), dist_list$transforms)
+    dist_list$inv.transforms <- append(list(pnorm), dist_list$inv.transforms)
   } else if(link == "identity") {
     dist_list$transforms <- append(list(identity), dist_list$transforms)
     dist_list$inv.transforms <- append(list(identity), dist_list$inv.transforms)
@@ -120,7 +123,7 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
     optim$lower = c(0, rep(-Inf, n_base_par))
     optim$upper = c(1, rep(Inf, n_base_par))
   } else {
-    stop("Link must be 'logistic', 'loglog', or 'identity'")
+    stop("Link must be 'logistic', 'loglog', 'probit', or 'identity'")
   }
 
   base_init <- expand.inits.args(dist_list$inits)
