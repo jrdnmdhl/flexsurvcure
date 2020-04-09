@@ -64,6 +64,18 @@ test_that("Cumulative hazard projections", {
   nmix_some_cured <- flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="identity", dist="weibull", mixture=F)
   nmix_some_cured_res <- summary(nmix_some_cured, t=Inf, type = "cumhaz", tidy=T)
   expect_equal(as.numeric(nmix_some_cured_res)[2], -log(as.numeric(nmix_some_cured$res[1])))
+
+  # MIXTURE MODELS
+  # Cumulative hazard should flatten
+  mix_some_cured <- flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="logistic", dist="exp")
+  mix_some_cured_res <- summary(mix_some_cured, t=c(9999999, Inf), type = "cumhaz", tidy=T)
+  expect_equal(mix_some_cured_res$est[1], mix_some_cured_res$est[2])
+
+  # NON-MIXTURE MODELS
+  # Cumulative hazard should flatten
+  nmix_some_cured <- flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="logistic", dist="exp", mixture=F)
+  nmix_some_cured_res <- summary(nmix_some_cured, t=c(9999999, Inf), type = "cumhaz", tidy=T)
+  expect_equal(nmix_some_cured_res$est[1], nmix_some_cured_res$est[2])
 })
 
 test_that("Hazard rate projections", {
@@ -123,4 +135,11 @@ test_that("Quantile functions", {
   )
 
 })
+
+test_that("Probit link works", {
+  probit_model <- flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="probit", dist="llogis")
+  expect_equal(probit_model$res.t[1,1], qnorm(probit_model$res[1,1]))
+  expect_equal(probit_model$res[1,1], pnorm(probit_model$res.t[1,1]))
+})
+
 
