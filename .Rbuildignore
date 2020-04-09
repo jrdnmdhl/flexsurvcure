@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 README.md
 ^cran-comments\.md$
+^.travis.yml$
+^codecov.yml$
+^\.travis\.yml$

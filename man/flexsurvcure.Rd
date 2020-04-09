@@ -4,8 +4,18 @@
 \alias{flexsurvcure}
 \title{Mixture and Non-Mixture Parametric Cure Models}
 \usage{
-flexsurvcure(formula, data, weights, bhazard, subset, dist, na.action,
-  link = "logistic", mixture = T, ...)
+flexsurvcure(
+  formula,
+  data,
+  weights,
+  bhazard,
+  subset,
+  dist,
+  na.action,
+  link = "logistic",
+  mixture = T,
+  ...
+)
 }
 \arguments{
 \item{formula}{A formula expression in conventional R linear modeling
@@ -63,7 +73,7 @@ observations to be used in the fit.}
 argument has been used. Default is \code{options()$na.action}.}
 
 \item{link}{A string representing the link function to use for estimation of the
-cure fraction.  Defaults to logistic.}
+cure fraction.  Defaults to "logistic", but also supports "loglog", "probit", and "identity".}
 
 \item{mixture}{optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.}
 

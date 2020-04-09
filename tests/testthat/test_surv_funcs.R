@@ -124,3 +124,10 @@ test_that("Quantile functions", {
 
 })
 
+test_that("Probit link works", {
+  probit_model <- flexsurvcure(Surv(rectime, censrec)~1,data=bc,link="probit", dist="llogis")
+  expect_equal(probit_model$res.t[1,1], qnorm(probit_model$res[1,1]))
+  expect_equal(probit_model$res[1,1], pnorm(probit_model$res.t[1,1]))
+})
+
+
