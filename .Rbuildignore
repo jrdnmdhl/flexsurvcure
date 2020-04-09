@@ -6,3 +6,4 @@ README.md
 ^codecov.yml$
 ^\.travis\.yml$
 ^codecov\.yml$
+^revdep$
