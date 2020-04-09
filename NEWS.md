@@ -1,3 +1,6 @@
+# flexsurvcure 1.1.0
+- Added probit link option
+
 # flexsurvcure 1.0.0
 - Fixes and performance improvements to quantile & random generation functions
 
