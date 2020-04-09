@@ -3,7 +3,6 @@ flexsurvcure
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/jrdnmdhl/flexsurvcure.svg?branch=master)](https://travis-ci.com/jrdnmdhl/flexsurvcure)
-[![codecov](https://codecov.io/gh/jrdnmdhl/flexsurvcure/branch/master/graph/badge.svg)](https://codecov.io/gh/jrdnmdhl/flexsurvcure)
 [![Codecov test coverage](https://codecov.io/gh/jrdnmdhl/flexsurvcure/branch/master/graph/badge.svg)](https://codecov.io/gh/jrdnmdhl/flexsurvcure?branch=master)
 <!-- badges: end -->
 
