@@ -1,7 +1,7 @@
 Package: flexsurvcure
 Title: Flexible Parametric Cure Models
-Version: 1.0.0
-Date: 2019-08-26
+Version: 1.0.1
+Date: 2020-04-09
 Authors@R: person("Jordan", "Amdahl", email = "jrdnmdhl@gmail.com", role = c("aut", "cre"))
 Maintainer: Jordan Amdahl <jrdnmdhl@gmail.com>
 Description: Flexible parametric mixture and non-mixture cure models for time-to-event data.
