@@ -11,7 +11,7 @@ vignette: >
 
 # Introduction
 
-Parametric cure models are a type of parametric survival model model in wich it is assumed that there are a proportion of subjects who will not experience the event. In a mixture cure model, these 'cured' and 'uncured' subjects are modeled separately, with the cured individuals subject to no excess risk and the uncured individuals subject to excess risk modeled using a parametric survival distribution. In a non-mixture model, a parametric survival distribution is scaled such that survival asymtpotically approaches the cure fraction.
+Parametric cure models are a type of parametric survival model model in which it is assumed that there are a proportion of subjects who will not experience the event. In a mixture cure model, these 'cured' and 'uncured' subjects are modeled separately, with the cured individuals subject to no excess risk and the uncured individuals subject to excess risk modeled using a parametric survival distribution. In a non-mixture model, a parametric survival distribution is scaled such that survival asymptotically approaches the cure fraction.
 
 
 # Mixture Cure Model
