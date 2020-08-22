@@ -2,8 +2,8 @@ flexsurvcure
 ============
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/jrdnmdhl/flexsurvcure.svg?branch=master)](https://travis-ci.com/jrdnmdhl/flexsurvcure)
-[![Codecov test coverage](https://codecov.io/gh/jrdnmdhl/flexsurvcure/branch/master/graph/badge.svg)](https://codecov.io/gh/jrdnmdhl/flexsurvcure?branch=master)
+[![Build Status](https://travis-ci.com/jrdnmdhl/flexsurvcure.svg?branch=master)](https://travis-ci.com/jrdnmdhl/flexsurvcure)
+[![Test Coverage](https://codecov.io/gh/jrdnmdhl/flexsurvcure/branch/master/graph/badge.svg)](https://codecov.io/gh/jrdnmdhl/flexsurvcure)
 <!-- badges: end -->
 
 The development repository for flexsurvcure, an R package for parametric mixture and non-mixture cure models.  Flexsurvcure is based on [flexsurv](http://cran.r-project.org/package=flexsurv), the R package for parametric survival modelling.
