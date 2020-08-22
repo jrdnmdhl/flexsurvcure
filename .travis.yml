@@ -1,6 +1,16 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+sudo: false
 cache: packages
+r_packages:
+  - covr
+install:
+  - R -e 'install.packages("devtools")'
+  - R -e 'devtools::install_deps(dep = T)'
+script:
+  - R CMD build .
+  - R -e 'devtools::test()'
+  - R CMD check *tar.gz
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - Rscript -e 'library(covr); codecov()'
