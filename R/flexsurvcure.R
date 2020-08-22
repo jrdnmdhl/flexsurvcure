@@ -153,32 +153,27 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
   # Build function list
   pfun = get(paste0("p", dist))
   dfun = get(paste0("d", dist))
+  qfun = get(paste0("q", dist))
   if(mixture) {
     dfns_list = list(
-      p = function(q, ...) {
-        pmixsurv(pfun, q, ...)
-      },
-      d = function(x, ...) {
-        dmixsurv(dfun, pfun, x, ...)
-      },
-      H = function(x, ...) Hmixsurv(pfun, x, ...),
-      h = function(x, ...) hmixsurv(dfun, pfun, x, ...),
-      q = function(p, ...) qmixsurv(pfun, p, ...),
-      mean = function(...) mean_mixsurv(pfun, ...),
+      p =    function(q, ...) pmixsurv(pfun, q, ...),
+      d =    function(x, ...) dmixsurv(dfun, pfun, x, ...),
+      H =    function(x, ...) Hmixsurv(pfun, x, ...),
+      h =    function(x, ...) hmixsurv(dfun, pfun, x, ...),
+      q =    function(p, ...) qmixsurv(pfun, p, ...),
+      r =    function(n, ...) rmixsurv(qfun, n, ...),
+      mean = function(...)    mean_mixsurv(pfun, ...),
       rmst = function(t, ...) rmst_mixsurv(pfun, t, ...)
     )
   } else {
     dfns_list = list(
-      p = function(q, ...) {
-        pnmixsurv(pfun, q, ...)
-      },
-      d = function(x, ...) {
-        dnmixsurv(dfun, pfun, x, ...)
-      },
-      H = function(x, ...) Hnmixsurv(pfun, x, ...),
-      h = function(x, ...) hnmixsurv(dfun, x, ...),
-      q = function(p, ...) qnmixsurv(pfun, p, ...),
-      mean = function(...) mean_nmixsurv(pfun, ...),
+      p =    function(q, ...) pnmixsurv(pfun, q, ...),
+      d =    function(x, ...) dnmixsurv(dfun, pfun, x, ...),
+      H =    function(x, ...) Hnmixsurv(pfun, x, ...),
+      h =    function(x, ...) hnmixsurv(dfun, x, ...),
+      q =    function(p, ...) qnmixsurv(pfun, p, ...),
+      r =    function(n, ...) rnmixsurv(qfun, n, ...),
+      mean = function(...)    mean_nmixsurv(pfun, ...),
       rmst = function(t, ...) rmst_nmixsurv(pfun, t, ...)
     )
   }

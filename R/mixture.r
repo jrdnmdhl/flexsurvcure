@@ -44,6 +44,8 @@ pmixsurv = function(pfun, q, theta, ...) {
   args$log.p <- F
   out <- theta + (1 - theta) * do.call(pfun, append(list(q), args))
   if (is.null(dots$lower.tail) || dots$lower.tail) {
+    pos_inf <- is.infinite(q) & (q > 0)
+    out[pos_inf] <- 0
     out <- 1 - out
   }
   if (!is.null(dots$log.p) && dots$log.p) {
