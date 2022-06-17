@@ -1,4 +1,7 @@
 # flexsurvcure 1.2.0
+- Updated to include vectorized versions of mean_mixsurv and mean_nmixsurv
+
+# flexsurvcure 1.2.0
 - Changed p function to satisfy convention that p function is P[X <= x] when lower.tail=TRUE, rather than P[X < x]
 - Adds random sampling function to object returned by flexsurvcure
 
