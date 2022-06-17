@@ -94,9 +94,9 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
   optim = list()
 
   # Patch the transformations based on link argument
-  if (class(dist) == "character") {
+  if ("character" %in% class(dist)) {
     dist_list <- flexsurv.dists[[dist]]
-  } else if(class(dist) == "list"){
+  } else if("list" %in% class(dist)){
     dist_list <- dist
     dist <- dist_list$name
   } else {
