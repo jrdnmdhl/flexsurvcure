@@ -158,22 +158,45 @@ rmst_mixsurv = function(pfun, t, theta, ...) {
 ##' @export
 ##' @rdname mixsurv
 mean_mixsurv = function(pfun, theta, ...) {
-  if (theta > 0) {
-    out <- Inf
-  }else {
-    args <- list(...)
-    out <- do.call(
-      rmst_generic,
-      append(
-        list(
-          pfun,
-          t = Inf,
-          start = 0
-        ),
-        args
-      )
-    )
-  }
-  return(out)
+
+  # Put together arguments for call to rmst_generic
+  args <- append(
+    list(
+      pfun,
+      t = Inf,
+      start = 0
+    ),
+    list(...)
+  )
+
+  # Figure out what length the output should be and create
+  # a vector to store result
+  out_length <- get_param_length_and_check(theta, args)
+  out <- numeric(length(out_length))
+
+
+  # Identify indices where mean survival will be infinite
+  # cure fraction is > 0.
+  inf_indices <- (theta > 0) & rep(T, out_length)
+  out[inf_indices] <- Inf
+
+  # Create arguments to call rmst_generic to estimate mean
+  # for indices where cure fraction is zero.
+  non_inf_args <- lapply(args, function(x) {
+
+    # Handle x is length 1 and shouldn't be indexed on
+    if (length(x) == 1) {
+      return(x)
+    }
+
+    return(x[!inf_indices])
+  })
+
+  # Set output for indices where theta is zero
+  non_inf_res <- do.call(rmst_generic, non_inf_args)
+
+  out[!inf_indices] <- non_inf_res
+
+  out
 }
 

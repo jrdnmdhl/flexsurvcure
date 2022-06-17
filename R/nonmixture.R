@@ -165,22 +165,37 @@ rmst_nmixsurv = function(pfun, t, theta, ...) {
 ##' @export
 ##' @rdname nmixsurv
 mean_nmixsurv = function(pfun, theta, ...) {
-  if (theta > 0) {
-    out <- Inf
-  }else {
-    args <- list(...)
-    out <- do.call(
-      rmst_generic,
-      append(
-        list(
-          pfun,
-          t = Inf,
-          start = 0
-        ),
-        args
-      )
-    )
-  }
-  return(out)
+
+  # This is a very silly function because if theta is greater
+  # than zero then the mean is infinite and if theta is zero
+  # then the mean is zero. Still need to have it since all
+  # flexsurv models should support getting means through
+  # summary.flexsurv.
+
+  # Put together arguments for call to rmst_generic
+  args <- append(
+    list(
+      pfun,
+      t = Inf,
+      start = 0
+    ),
+    list(...)
+  )
+
+  # Figure out what length the output should be and create
+  # a vector to store result
+  out_length <- get_param_length_and_check(theta, args)
+  out <- numeric(length(out_length))
+
+
+  # Identify indices where mean survival will be infinite
+  # cure fraction is > 0.
+  inf_indices <- (theta > 0) & rep(T, out_length)
+  out[inf_indices] <- Inf
+
+  out[!inf_indices] <- 0
+
+  out
+
 }
 

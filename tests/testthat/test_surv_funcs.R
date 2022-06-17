@@ -19,15 +19,62 @@ test_that("Mean survival works", {
   expect_equal(as.numeric(nmix_some_cured_res), c(Inf, Inf, Inf))
 
 
-  # Test case where mean is zero
+  # Test case where theta is zero
   expect_equal(
     mean_nmixsurv(pgenf, 0, mu = 1.2, sigma = 0.8, Q = 0.2, P = 0.3),
-    mean_genf(1.2, 0.8, 0.2, 0.3)
+    0
   )
   expect_equal(
     mean_mixsurv(pgenf, 0, mu = 1.2, sigma = 0.8, Q = 0.2, P = 0.3),
     mean_genf(1.2, 0.8, 0.2, 0.3)
   )
+
+  # Test with vector arguments
+  expect_equal(
+    mean_nmixsurv(pweibull, c(0.1, 0.1, 0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(Inf, Inf, Inf)
+  )
+  expect_equal(
+    mean_nmixsurv(pweibull, c(0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(Inf, Inf, Inf)
+  )
+  expect_equal(
+    mean_nmixsurv(pweibull, c(0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(0, 0, 0)
+  )
+  expect_equal(
+    mean_nmixsurv(pweibull, c(0, 1, 1), shape=c(1.2), scale=c(20)),
+    c(0, Inf, Inf)
+  )
+  expect_error(
+    mean_nmixsurv(pweibull, c(0, 1, 1), shape=c(1.2, 1.3), scale=c(20, 21)),
+    'Parameter values provided were of incompatible length'
+  )
+  expect_equal(
+    mean_mixsurv(pweibull, c(0.1, 0.1, 0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(Inf, Inf, Inf)
+  )
+  expect_equal(
+    mean_mixsurv(pweibull, c(0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(Inf, Inf, Inf)
+  )
+  expect_equal(
+    mean_mixsurv(pweibull, c(0, 0, 0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(18.81311716, 19.39511074, 45.13726464)
+  )
+  expect_equal(
+    mean_mixsurv(pweibull, c(0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+    c(18.81311716, 19.39511074, 45.13726464)
+  )
+  expect_equal(
+    mean_mixsurv(pweibull, c(0, 1, 1), shape=c(1.2), scale=c(20)),
+    c(18.81311716, Inf, Inf)
+  )
+  expect_error(
+    mean_mixsurv(pweibull, c(0, 1, 1), shape=c(1.2, 1.3), scale=c(20, 21)),
+    'Parameter values provided were of incompatible length'
+  )
+
 })
 
 test_that("RMST Works", {
