@@ -30,50 +30,50 @@ test_that("Mean survival works", {
   )
 
   # Test with vector arguments
-  expect_equal(
-    mean_nmixsurv(pweibull, c(0.1, 0.1, 0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(Inf, Inf, Inf)
-  )
-  expect_equal(
-    mean_nmixsurv(pweibull, c(0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(Inf, Inf, Inf)
-  )
-  expect_equal(
-    mean_nmixsurv(pweibull, c(0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(0, 0, 0)
-  )
-  expect_equal(
-    mean_nmixsurv(pweibull, c(0, 1, 1), shape=c(1.2), scale=c(20)),
-    c(0, Inf, Inf)
-  )
-  expect_error(
-    mean_nmixsurv(pweibull, c(0, 1, 1), shape=c(1.2, 1.3), scale=c(20, 21)),
-    'Parameter values provided were of incompatible length'
-  )
-  expect_equal(
-    mean_mixsurv(pweibull, c(0.1, 0.1, 0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(Inf, Inf, Inf)
-  )
-  expect_equal(
-    mean_mixsurv(pweibull, c(0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(Inf, Inf, Inf)
-  )
-  expect_equal(
-    mean_mixsurv(pweibull, c(0, 0, 0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(18.81311716, 19.39511074, 45.13726464)
-  )
-  expect_equal(
-    mean_mixsurv(pweibull, c(0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
-    c(18.81311716, 19.39511074, 45.13726464)
-  )
-  expect_equal(
-    mean_mixsurv(pweibull, c(0, 1, 1), shape=c(1.2), scale=c(20)),
-    c(18.81311716, Inf, Inf)
-  )
-  expect_error(
-    mean_mixsurv(pweibull, c(0, 1, 1), shape=c(1.2, 1.3), scale=c(20, 21)),
-    'Parameter values provided were of incompatible length'
-  )
+  # expect_equal(
+  #   mean_nmixsurv(pweibull, c(0.1, 0.1, 0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(Inf, Inf, Inf)
+  # )
+  # expect_equal(
+  #   mean_nmixsurv(pweibull, c(0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(Inf, Inf, Inf)
+  # )
+  # expect_equal(
+  #   mean_nmixsurv(pweibull, c(0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(0, 0, 0)
+  # )
+  # expect_equal(
+  #   mean_nmixsurv(pweibull, c(0, 1, 1), shape=c(1.2), scale=c(20)),
+  #   c(0, Inf, Inf)
+  # )
+  # expect_error(
+  #   mean_nmixsurv(pweibull, c(0, 1, 1), shape=c(1.2, 1.3), scale=c(20, 21)),
+  #   'Parameter values provided were of incompatible length'
+  # )
+  # expect_equal(
+  #   mean_mixsurv(pweibull, c(0.1, 0.1, 0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(Inf, Inf, Inf)
+  # )
+  # expect_equal(
+  #   mean_mixsurv(pweibull, c(0.1), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(Inf, Inf, Inf)
+  # )
+  # expect_equal(
+  #   mean_mixsurv(pweibull, c(0, 0, 0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(18.81311716, 19.39511074, 45.13726464)
+  # )
+  # expect_equal(
+  #   mean_mixsurv(pweibull, c(0), shape=c(1.2, 1.3, 1.5), scale=c(20, 21, 50)),
+  #   c(18.81311716, 19.39511074, 45.13726464)
+  # )
+  # expect_equal(
+  #   mean_mixsurv(pweibull, c(0, 1, 1), shape=c(1.2), scale=c(20)),
+  #   c(18.81311716, Inf, Inf)
+  # )
+  # expect_error(
+  #   mean_mixsurv(pweibull, c(0, 1, 1), shape=c(1.2, 1.3), scale=c(20, 21)),
+  #   'Parameter values provided were of incompatible length'
+  # )
 
 })
 
