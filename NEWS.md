@@ -1,4 +1,8 @@
-# flexsurvcure 1.2.0
+# flexsurvcure 1.3.1
+- Fixes bug where wrong function was used in quantile calculations for summary.flexsurvreg
+- Fixes issue with vectorization of quantile functions
+
+# flexsurvcure 1.3.0
 - Updated to include vectorized versions of mean_mixsurv and mean_nmixsurv
 
 # flexsurvcure 1.2.0
