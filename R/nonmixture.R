@@ -112,9 +112,15 @@ qnmixsurv = function(qfun, p, theta, ...) {
   args$log.p <- F
   uncured <- inv_p > theta
   out <- rep(Inf, length(inv_p))
-  if (theta == 0) {
+  if (length(theta)==1) {
+    theta <- rep(theta, length(out))
+  }
+
+  zeroThetaInd = uncured & theta == 0
+
+  if (any(zeroThetaInd)) {
     # If no cure then just use base qfun
-    out <- do.call(qfun, append(list(inv_p), args))
+    out[zeroThetaInd] <- do.call(qfun, append(list(inv_p[zeroThetaInd]), args))
   } else {
     # Calculations below are meant to map the quantile distribution of the base
     # distribution to the quantile distribution of the cure model using the

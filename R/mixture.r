@@ -116,13 +116,9 @@ qmixsurv = function(qfun, p, theta, ...) {
   args <- dots
   args$lower.tail <- F
   args$log.p <- F
-  if (theta == 0) {
-    out <- do.call(qfun, append(list(inv_p), args))
-  } else {
-    uncured <- inv_p > theta
-    out <- rep(Inf, length(inv_p))
-    out[uncured] <- do.call(qfun, append(list((inv_p[uncured] - theta) / (1 - theta)), args))
-  }
+  uncured <- inv_p > theta
+  out <- rep(Inf, length(inv_p))
+  out[uncured] <- do.call(qfun, append(list((inv_p[uncured] - theta) / (1 - theta)), args))
   return(out)
 }
 
