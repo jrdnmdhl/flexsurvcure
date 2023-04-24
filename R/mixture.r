@@ -118,7 +118,7 @@ qmixsurv = function(qfun, p, theta, ...) {
   args$log.p <- F
   uncured <- inv_p > theta
   out <- rep(Inf, length(inv_p))
-  out[uncured] <- do.call(qfun, append(list((inv_p[uncured] - theta) / (1 - theta)), args))
+  out[uncured] <- do.call(qfun, append(list(pmax((inv_p - theta) / (1 - theta),0)), args))[uncured]
   return(out)
 }
 

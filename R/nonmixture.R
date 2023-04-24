@@ -133,8 +133,8 @@ qnmixsurv = function(qfun, p, theta, ...) {
     # Su(t) = 1 - ln[S(t)] / ln[theta]
     #
     # Where Su(t) is the baseline survival distribution
-    p_surv_to_lookup <- 1 - (log(inv_p[uncured]) / log(theta))
-    out[uncured] <- do.call(qfun, append(list(p_surv_to_lookup), args))
+    p_surv_to_lookup <- 1 - (log(inv_p) / log(theta))
+    out[uncured] <- do.call(qfun, append(list(p_surv_to_lookup), args))[uncured]
   }
   return(out)
 }
