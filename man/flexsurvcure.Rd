@@ -20,7 +20,7 @@ flexsurvcure(
 \arguments{
 \item{formula}{A formula expression in conventional R linear modeling
 syntax. The response must be a survival object as returned by the
-\code{\link{Surv}} function, and any covariates are given on the right-hand
+\code{\link[survival:Surv]{survival::Surv()}} function, and any covariates are given on the right-hand
 side.  For example,
 
 \code{Surv(time, dead) ~ age + sex}
@@ -50,7 +50,7 @@ functions that might be used in formulae (such as \code{I()}, or
 safer way to model covariates on ancillary parameters is through the
 \code{anc} argument to \code{\link{flexsurvreg}}.
 
-\code{\link{survreg}} users should also note that the function
+\code{\link[survival:survreg]{survival::survreg()}} users should also note that the function
 \code{strata()} is ignored, so that any covariates surrounded by
 \code{strata()} are applied to the location parameter.}
 
@@ -84,7 +84,7 @@ Mixture and non-mixture cure models using flexible base distributions
 from the flexsurv package.
 }
 \details{
-This function works as a wrapper around \code{\link{flexsurvreg}} by
+This function works as a wrapper around \code{\link[flexsurv:flexsurvreg]{flexsurv::flexsurvreg()}} by
 dynamically constructing a custom distribution using wrappers to the
 pdf and cdf functions.
 
