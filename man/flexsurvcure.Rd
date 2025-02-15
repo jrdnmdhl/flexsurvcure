@@ -48,7 +48,7 @@ However, if the names of the ancillary parameters clash with any real
 functions that might be used in formulae (such as \code{I()}, or
 \code{factor()}), then those functions will not work in the formula.  A
 safer way to model covariates on ancillary parameters is through the
-\code{anc} argument to \code{\link{flexsurvreg}}.
+\code{anc} argument to \code{\link[flexsurv:flexsurvreg]{flexsurv::flexsurvreg}}.
 
 \code{\link[survival:survreg]{survival::survreg()}} users should also note that the function
 \code{strata()} is ignored, so that any covariates surrounded by
@@ -77,7 +77,7 @@ cure fraction.  Defaults to "logistic", but also supports "loglog", "probit", an
 
 \item{mixture}{optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.}
 
-\item{...}{other arguments to be passed to \code{\link{flexsurvreg}}.}
+\item{...}{other arguments to be passed to \code{\link[flexsurv:flexsurvreg]{flexsurv::flexsurvreg}}.}
 }
 \description{
 Mixture and non-mixture cure models using flexible base distributions

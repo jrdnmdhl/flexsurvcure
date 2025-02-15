@@ -55,7 +55,7 @@ expand.inits.args <- function(inits) {
 ##' functions that might be used in formulae (such as \code{I()}, or
 ##' \code{factor()}), then those functions will not work in the formula.  A
 ##' safer way to model covariates on ancillary parameters is through the
-##' \code{anc} argument to \code{\link{flexsurvreg}}.
+##' \code{anc} argument to \code{\link[flexsurv:flexsurvreg]{flexsurv::flexsurvreg}}.
 ##'
 ##' \code{\link[survival:survreg]{survival::survreg()}} users should also note that the function
 ##' \code{strata()} is ignored, so that any covariates surrounded by
@@ -75,7 +75,7 @@ expand.inits.args <- function(inits) {
 ##' @param link A string representing the link function to use for estimation of the
 ##' cure fraction.  Defaults to "logistic", but also supports "loglog", "probit", and "identity".
 ##' @param mixture optional TRUE/FALSE to specify whether a mixture model should be fitted.  Defaults to TRUE.
-##' @param ... other arguments to be passed to \code{\link{flexsurvreg}}.
+##' @param ... other arguments to be passed to \code{\link[flexsurv:flexsurvreg]{flexsurv::flexsurvreg}}.
 ##' @examples
 ##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="weibull", anc=list(scale=~group))
 ##' flexsurvcure(Surv(rectime,censrec)~group, data=bc, dist="lnorm", mixture = FALSE)
