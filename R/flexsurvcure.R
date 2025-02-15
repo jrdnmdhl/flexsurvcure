@@ -171,7 +171,7 @@ flexsurvcure <- function(formula, data, weights, bhazard, subset, dist, na.actio
       d =    function(x, ...) dnmixsurv(dfun, pfun, x, ...),
       H =    function(x, ...) Hnmixsurv(pfun, x, ...),
       h =    function(x, ...) hnmixsurv(dfun, x, ...),
-      q =    function(p, ...) qnmixsurv(pfun, p, ...),
+      q =    function(p, ...) qnmixsurv(qfun, p, ...),
       r =    function(n, ...) rnmixsurv(qfun, n, ...),
       mean = function(...)    mean_nmixsurv(pfun, ...),
       rmst = function(t, ...) rmst_nmixsurv(pfun, t, ...)

@@ -1,3 +1,6 @@
+# flexsurvcure 1.3.3
+- Fixes issue with quantile function generation that led to incorrect results when generating quantiles through summary.flexsurvreg
+
 # flexsurvcure 1.3.2
 - Fixes issue with incompatible vector length in quantile functions
 
